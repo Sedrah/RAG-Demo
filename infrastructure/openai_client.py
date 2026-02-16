@@ -1,20 +1,10 @@
-import os
-import streamlit as st
 from openai import OpenAI
-
-
-def get_secret(key):
-    # Try local env first
-    value = os.getenv(key)
-
-    # Fallback to Streamlit secrets
-    if not value:
-        value = st.secrets.get(key)
-
-    return value
-
+from infrastructure.secrets import get_secret
 
 def get_openai_client():
+    """
+    Returns an OpenAI client using environment or Streamlit secrets.
+    """
     api_key = get_secret("OPENAI_API_KEY")
 
     if not api_key:
