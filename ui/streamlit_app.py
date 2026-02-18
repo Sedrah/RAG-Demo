@@ -16,6 +16,8 @@ st.set_page_config(
     layout="wide"
 )
 
+st.title("💰 AI Pricing Decision Assistant")
+
 st.sidebar.title("AI Decision Support System")
 
 # ---------- Sidebar ----------
@@ -60,7 +62,7 @@ if st.button("Ask AI") and query:
         score = agent_output["confidence_score"]
         label = agent_output["confidence_label"]
         trace = agent_output["execution_trace"]
-        escalation = agent_output.get("escalation_required", False)
+        escalation = agent_output["escalation_required"]
 
      # ---------- pipeline visualization  ----------
     st.subheader("🧠 Agent Execution Pipeline")
