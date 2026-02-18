@@ -16,20 +16,19 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("💰 AI Pricing Decision Assistant")
+st.sidebar.title("AI Decision Support System")
 
 # ---------- Sidebar ----------
-st.sidebar.header("About")
-st.sidebar.write(
-    """
-    This assistant answers pricing risk questions using internal policy documents.
-    
-    Features:
-    - Retrieval Augmented Generation
-    - Source Transparency
-    - Confidence Scoring
-    """
-)
+st.sidebar.markdown("""
+    ### 🔍 System Capabilities
+
+    - Multi-source knowledge retrieval
+    - Confidence-aware decision scoring
+    - Agent pipeline orchestration
+    - Escalation readiness for low-confidence answers
+    - Transparent reasoning trace
+    """)
+
 
 st.sidebar.header("Example Questions")
 examples = [
@@ -54,12 +53,34 @@ if st.button("Ask AI") and query:
 
     with st.spinner("Retrieving knowledge and generating answer..."):
 
-        rag_output = run_agent_pipeline(query)
+        agent_output = run_agent_pipeline(query)
 
-        answer = rag_output["answer"]
-        results = rag_output["results"]
-        score = rag_output["confidence_score"]
-        label = rag_output["confidence_label"]
+        answer = agent_output["answer"]
+        results = agent_output["results"]
+        score = agent_output["confidence_score"]
+        label = agent_output["confidence_label"]
+        trace = agent_output["execution_trace"]
+        escalation = agent_output["escalation_required"]
+
+     # ---------- pipeline visualization  ----------
+    st.subheader("🧠 Agent Execution Pipeline")
+
+    pipeline_steps = [
+            "Retrieval",
+            "Confidence Evaluation",
+            "Answer Generation"
+        ]
+
+    cols = st.columns(len(pipeline_steps))
+
+    for i, step in enumerate(pipeline_steps):
+            if step in trace:
+                cols[i].success(step)
+            else:
+                cols[i].info(step)
+    # ---------- Escalation banner ----------
+    if escalation:
+            st.warning("⚠️ Low confidence detected. Human review recommended.")
 
     # ---------- Display Answer ----------
     st.subheader("🤖 AI Answer")
