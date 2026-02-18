@@ -65,21 +65,21 @@ if st.button("Ask AI") and query:
      # ---------- pipeline visualization  ----------
     st.subheader("🧠 Agent Execution Pipeline")
 
-        pipeline_steps = [
+    pipeline_steps = [
             "Retrieval",
             "Confidence Evaluation",
             "Answer Generation"
         ]
 
-        cols = st.columns(len(pipeline_steps))
+    cols = st.columns(len(pipeline_steps))
 
-        for i, step in enumerate(pipeline_steps):
+    for i, step in enumerate(pipeline_steps):
             if step in trace:
                 cols[i].success(step)
             else:
                 cols[i].info(step)
     # ---------- Escalation banner ----------
-        if escalation:
+    if escalation:
             st.warning("⚠️ Low confidence detected. Human review recommended.")
 
     # ---------- Display Answer ----------
