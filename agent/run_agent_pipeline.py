@@ -1,6 +1,8 @@
 from retrieval.query_chroma import query_collection
-from services.confidence_service import compute_confidence
-from services.llm_service import generate_answer
+from retrieval.confidence_engine import compute_confidence
+from rag.generate_answer import generate_answer
+from rag.build_context import build_context
+from rag.build_prompt import build_prompt
 
 
 def run_agent_pipeline(query):
@@ -45,8 +47,11 @@ def run_agent_pipeline(query):
     # --------------------------
     state["execution_trace"].append("Answer Generation")
 
-    answer = generate_answer(query, results)
+    context = build_context(results)
 
+    prompt = build_prompt(context, query, state["confidence_label"])
+
+    answer = generate_answer(prompt)
     state["answer"] = answer
 
     return state
