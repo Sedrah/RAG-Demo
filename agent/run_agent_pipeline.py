@@ -6,7 +6,9 @@ from rag.build_prompt import build_prompt
 
 
 def run_agent_pipeline(query):
+    
 
+    execution_trace = []
     state = {
         "query": query,
         "results": [],
