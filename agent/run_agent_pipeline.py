@@ -6,9 +6,7 @@ from rag.build_prompt import build_prompt
 
 
 def run_agent_pipeline(query):
-    
 
-    execution_trace = []
     state = {
         "query": query,
         "results": [],
@@ -40,9 +38,11 @@ def run_agent_pipeline(query):
     # --------------------------
     # NODE 3 — Escalation Logic
     # --------------------------
-    if score < 0.4:
+    escalation_required = label == "Low"
+    state["escalation_required"] = escalation_required
+
+    if escalation_required:
         state["execution_trace"].append("Escalation Triggered")
-        state["escalation_required"] = True
 
     # --------------------------
     # NODE 4 — Answer Generation
@@ -50,8 +50,7 @@ def run_agent_pipeline(query):
     state["execution_trace"].append("Answer Generation")
 
     context = build_context(results)
-
-    prompt = build_prompt(context, query, state["confidence_label"])
+    prompt = build_prompt(context, query, label)
 
     answer = generate_answer(prompt)
     state["answer"] = answer

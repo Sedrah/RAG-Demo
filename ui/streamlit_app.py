@@ -60,7 +60,7 @@ if st.button("Ask AI") and query:
         score = agent_output["confidence_score"]
         label = agent_output["confidence_label"]
         trace = agent_output["execution_trace"]
-        escalation = agent_output["escalation_required"]
+        escalation = agent_output.get("escalation_required", False)
 
      # ---------- pipeline visualization  ----------
     st.subheader("🧠 Agent Execution Pipeline")
