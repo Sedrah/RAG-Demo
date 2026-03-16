@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/sedra/RAG-Demo/RAG-Demo pull)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)"
+    ]
+  }
+}
